@@ -46,4 +46,24 @@ class AuthTest extends TestCase
         $response->assertStatus(200)
             ->assertJsonStructure(['token']);
     }
+
+    /** @test */
+    public function user_cannot_login_with_invalid_credentials()
+    {
+
+        $user = User::factory()->create([
+            'email' => 'ahmed@example.com',
+            'password' => Hash::make('password123'),
+        ]);
+
+        $response = $this->postJson('/api/auth/login', [
+            'email' => 'ahmed@example.com',
+            'password' => 'wrongpassword',
+        ]);
+
+        $response->assertStatus(401)
+            ->assertJson([
+                'error' => 'Unauthorized',
+            ]);
+    }
 }
