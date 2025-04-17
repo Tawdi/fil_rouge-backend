@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class AuthTest extends TestCase
 {
@@ -21,11 +22,28 @@ class AuthTest extends TestCase
         ]);
 
         $response->assertStatus(200)
-                 ->assertJsonStructure(['user', 'token']);
+            ->assertJsonStructure(['user', 'token']);
 
         $this->assertDatabaseHas('users', [
             'email' => 'ahmed@example.com',
         ]);
     }
-}
 
+    /** @test */
+    public function  user_can_login_with_correct_credentials()
+    {
+
+        $user = User::factory()->create([
+            'email' => 'ahmed@user.com',
+            'password' => Hash::make('password123'),
+        ]);
+
+        $response = $this->postJson('/api/auth/login', [
+            'email' => 'ahmed@user.com',
+            'password' => 'password123',
+        ]);
+
+        $response->assertStatus(200)
+            ->assertJsonStructure(['token']);
+    }
+}
