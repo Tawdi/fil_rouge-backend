@@ -66,4 +66,36 @@ class AuthTest extends TestCase
                 'error' => 'Unauthorized',
             ]);
     }
+
+    /** @test */
+    public function user_can_fetch_his_profile_using_token()
+    {
+        $user = User::factory()->create();
+
+        $token = auth('api')->login($user);
+
+        $response = $this->withHeader('Authorization', "Bearer $token")
+            ->getJson('/api/auth/me');
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'email' => $user->email,
+            ]);
+    }
+
+    /** @test */
+    public function user_can_logout()
+    {
+        $user = User::factory()->create();
+
+        $token = auth('api')->login($user);
+
+        $response = $this->withHeader('Authorization', "Bearer $token")
+            ->postJson('/api/auth/logout');
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'message' => 'Successfully logged out',
+            ]);
+    }
 }
