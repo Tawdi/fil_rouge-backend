@@ -23,14 +23,10 @@ return new class extends Migration
             $table->string('poster')->nullable();
             $table->string('background')->nullable();
             $table->string('trailer')->nullable();
+            $table->foreignId('genre_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
 
-        Schema::create('genre_movie', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('genre_id')->constrained()->onDelete('cascade');
-            $table->foreignId('movie_id')->constrained()->onDelete('cascade');
-        });
     }
 
     /**
@@ -39,6 +35,5 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('movies');
-        Schema::dropIfExists('genre_movie');
     }
 };
