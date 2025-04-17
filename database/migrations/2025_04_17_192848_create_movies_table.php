@@ -20,9 +20,9 @@ return new class extends Migration
             $table->date('release_date');
             $table->string('director')->nullable();
             $table->string('actors')->nullable();
-            $table->string('poster')->nullable();
-            $table->string('background')->nullable();
-            $table->string('trailer')->nullable();
+            $table->text('poster')->nullable();
+            $table->text('background')->nullable();
+            $table->text('trailer')->nullable();
             $table->foreignId('genre_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
