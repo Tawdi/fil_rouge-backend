@@ -21,5 +21,26 @@ class AuthController extends Controller
         return response()->json($result);
     }
 
+    public function login(LoginRequest $request)
+    {
+        $token = $this->authService->login($request->validated());
+
+        if (!$token) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        return response()->json(['token' => $token]);
+    }
+
+    public function me()
+    {
+        return response()->json(auth('api')->user());
+    }
+
+    public function logout()
+    {
+        auth('api')->logout();
+        return response()->json(['message' => 'Successfully logged out']);
+    }
 }
 
