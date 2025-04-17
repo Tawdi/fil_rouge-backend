@@ -17,9 +17,29 @@ class MovieController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $movies = $this->movieService->all();
+        $query = Movie::query();
+        
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('titre', 'ILIKE', "%{$search}%");
+        }
+
+        if ($request->has('genre_id')) {
+            $query->where('genre_id', $request->input('genre_id'));
+        }
+
+        if ($request->has('rating')) {
+            $query->where('rating', '>=', $request->input('rating'));
+        }
+
+        if ($request->has('release_date')) {
+            $query->where('release_date', '>=', $request->input('release_date'));
+        }
+
+        $movies = $query->with('genre')->paginate(12);
+
         return response()->json($movies);
     }
 
