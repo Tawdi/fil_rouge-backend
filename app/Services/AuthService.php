@@ -26,4 +26,17 @@ class AuthService
     {
         return auth('api')->attempt($credentials);
     }
+
+
+    public function changePassword(User $user, string $currentPassword, string $newPassword): bool
+    {
+        if (!Hash::check($currentPassword, $user->password)) {
+            return false;
+        }
+
+        $user->password = Hash::make($newPassword);
+        $user->save();
+
+        return true;
+    }
 }
