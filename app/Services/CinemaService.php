@@ -6,7 +6,7 @@ use App\Models\Cinema;
 
 class CinemaService
 {
-    public function getAll()
+    public function all()
     {
         return Cinema::with('user')->paginate(10);
     }
