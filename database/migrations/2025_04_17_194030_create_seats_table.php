@@ -20,7 +20,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('seat_type_id')->constrained()->onDelete('cascade');
             $table->integer('number');
-            $table->integer('row'); // A,B,C ..
+            $table->string('row'); // A,B,C ..
             $table->foreignId('room_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
