@@ -8,7 +8,7 @@ class CinemaService
 {
     public function all()
     {
-        return Cinema::with('user')->paginate(10);
+        return Cinema::with('user','rooms')->paginate(10);
     }
 
     public function create(array $data): Cinema
@@ -29,6 +29,6 @@ class CinemaService
 
     public function findById(int $id): ?Cinema
     {
-        return Cinema::with('user')->findOrFail($id);
+        return Cinema::with('user','rooms')->findOrFail($id);
     }
 }
