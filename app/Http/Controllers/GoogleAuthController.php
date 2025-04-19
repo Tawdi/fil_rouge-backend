@@ -29,10 +29,12 @@ class GoogleAuthController extends Controller
         );
 
         $token = JWTAuth::fromUser($user);
+        return redirect()->to(env('FRONTEND_URL') . "/auth/callback?token=$token");
 
-        return response()->json([
-            'user' => $user,
-            'token' => $token
-        ]);
+
+        // return response()->json([
+        //     'user' => $user,
+        //     'token' => $token
+        // ]);
     }
 }
