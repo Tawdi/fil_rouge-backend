@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\Cinema;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class CinemaService
 {
@@ -13,7 +15,18 @@ class CinemaService
 
     public function create(array $data): Cinema
     {
-        return Cinema::create($data);
+
+        $user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make('movieseat000'),
+            'role' => 'cinema_admin',
+        ]);
+        return Cinema::create([
+            'name' => $data['name'],
+            'address' => $data['address'],
+            'user_id' => $user->id,
+        ]);
     }
 
     public function update(Cinema $cinema, array $data): Cinema

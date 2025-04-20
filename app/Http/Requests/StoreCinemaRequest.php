@@ -24,7 +24,7 @@ class StoreCinemaRequest extends FormRequest
         return [
             'name' => 'required|string|max:255',
             'address' => 'required|string|max:255',
-            'user_id' => 'required|exists:users,id',
+            'email' => 'required|email|unique:users,email',
             'image' => 'nullable|string',
         ];
     }
