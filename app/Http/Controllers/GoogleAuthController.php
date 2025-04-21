@@ -25,11 +25,28 @@ class GoogleAuthController extends Controller
                 'password' => bcrypt(Str::random(16)), 
                 'role' => 'user',
                 'profile_image' => $googleUser->getAvatar(),
-            ]
+            ] 
         );
 
         $token = JWTAuth::fromUser($user);
-        return redirect()->to(env('FRONTEND_URL') . "/auth/callback?token=$token");
+
+        $refreshToken = auth('api')
+        ->setTTL(10080) // 7 days
+        ->claims(['type' => 'refresh'])
+        ->fromUser($user);
+
+        return redirect()->to(env('FRONTEND_URL') . "/auth/callback?token=$token")
+        ->withCookie(cookie(
+            'refresh_token',
+            $refreshToken,
+            10080,     
+            null,
+            null,
+            true,    
+            true,          
+            false,
+            'None'        
+        ));
 
 
         // return response()->json([

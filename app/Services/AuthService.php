@@ -39,4 +39,20 @@ class AuthService
 
         return true;
     }
+
+    public function refreshToken(string $refreshToken): ?string
+    {
+        try {
+            // Validate the refresh token
+            $payload = JWTAuth::setToken($refreshToken)->getPayload();
+            if ($payload['type'] !== 'refresh') {
+                throw new \Exception('Invalid token type');
+            }
+
+            // Refresh the access token
+            return JWTAuth::setToken($refreshToken)->refresh();
+        } catch (\Exception $e) {
+            throw new \Exception('Failed to refresh token');
+        }
+    }
 }
