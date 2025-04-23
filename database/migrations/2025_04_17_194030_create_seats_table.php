@@ -15,15 +15,15 @@ return new class extends Migration
             $table->id();
             $table->string('name'); 
         });
-        
-        Schema::create('seats', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('seat_type_id')->constrained()->onDelete('cascade');
-            $table->integer('number');
-            $table->string('row'); // A,B,C ..
-            $table->foreignId('room_id')->constrained()->onDelete('cascade');
-            $table->timestamps();
-        });
+
+        // Schema::create('seats', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->foreignId('seat_type_id')->constrained()->onDelete('cascade');
+        //     $table->integer('number');
+        //     $table->string('row'); // A,B,C ..
+        //     $table->foreignId('room_id')->constrained()->onDelete('cascade');
+        //     $table->timestamps();
+        // });
 
         Schema::create('room_seat_type', function (Blueprint $table) {
             $table->id();
@@ -40,7 +40,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('seat_types');
-        Schema::dropIfExists('seats');
+        // Schema::dropIfExists('seats');
         Schema::dropIfExists('room_seat_type');
     }
 };

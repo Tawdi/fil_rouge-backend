@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedInteger('seats_count')->default(0);
+            $table->jsonb('layout');
             $table->foreignId('cinema_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

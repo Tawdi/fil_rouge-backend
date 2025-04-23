@@ -15,15 +15,16 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('seance_id')->constrained('seances')->onDelete('cascade');
+            $table->jsonb('seats'); 
             $table->timestamps();
         });
 
-        // Reservation_Seat (pivot)
-        Schema::create('reservation_seat', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('reservation_id')->constrained()->onDelete('cascade');
-            $table->foreignId('seat_id')->constrained()->onDelete('cascade');
-        });
+        // // Reservation_Seat (pivot)
+        // Schema::create('reservation_seat', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->foreignId('reservation_id')->constrained()->onDelete('cascade');
+        //     $table->foreignId('seat_id')->constrained()->onDelete('cascade');
+        // });
     }
 
     /**
@@ -32,6 +33,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('reservations');
-        Schema::dropIfExists('reservation_seat');
+        // Schema::dropIfExists('reservation_seat');
     }
 };
