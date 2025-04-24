@@ -18,7 +18,12 @@ class RoomController extends Controller
      */
     public function index(): JsonResponse
     {
-        return response()->json($this->roomService->all());
+        $user = auth('api')->user();
+        if (!$user->isCinemaAdmin() || !$user->cinema) {
+            return response()->json(['message' => 'You must be a cinema admin with an associated cinema'], 403);
+        }
+
+        return response()->json($this->roomService->all($user->cinema->id));
     }
 
     /**
@@ -26,7 +31,14 @@ class RoomController extends Controller
      */
     public function store(StoreRoomRequest $request): JsonResponse
     {
-        $room = $this->roomService->create($request->validated());
+        $user = auth('api')->user();
+        if (!$user->isCinemaAdmin() || !$user->cinema) {
+            return response()->json(['message' => 'You must be a cinema admin with an associated cinema to create a room.'], 403);
+
+        }
+        $data = $request->validated();
+        $data['cinema_id'] = $user->cinema->id;
+        $room = $this->roomService->create($data);
         return response()->json($room, 201);
     }
 
@@ -43,6 +55,15 @@ class RoomController extends Controller
      */
     public function update(UpdateRoomRequest $request, Room $room): JsonResponse
     {
+        $user = auth('api')->user();
+        if (!$user->isCinemaAdmin() || !$user->cinema) {
+            return response()->json(['message' => 'You must be a cinema admin with an associated cinema to edit a room.'], 403);
+
+        }
+        if($user->cinema->id != $room->cinema_id){
+            return response()->json(['message' => 'You cannot edit a room that does not belong to your cinema.'], 403);
+        }
+
         $room = $this->roomService->update($room, $request->validated());
         return response()->json($room);
     }
@@ -52,6 +73,14 @@ class RoomController extends Controller
      */
     public function destroy(Room $room): JsonResponse
     {
+        $user = auth('api')->user();
+        if (!$user->isCinemaAdmin() || !$user->cinema) {
+            return response()->json(['message' => 'You must be a cinema admin with an associated cinema to delete a room.'], 403);
+        }
+        if($user->cinema->id != $room->cinema_id){
+            return response()->json(['message' => 'You cannot delete a room that does not belong to your cinema.'], 403);
+        }
+
         $this->roomService->delete($room);
         return response()->json(null, 204);
     }

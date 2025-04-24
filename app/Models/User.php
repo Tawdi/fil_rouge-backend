@@ -60,9 +60,9 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    public function isAdmin(): bool
+    public function isSuperAdmin(): bool
     {
-        return $this->role === 'admin';
+        return $this->role === 'super_admin';
     }
 
     public function isClient(): bool
@@ -73,5 +73,10 @@ class User extends Authenticatable implements JWTSubject
     public function isCinemaAdmin(): bool
     {
         return $this->role === 'cinema_admin';
+    }
+
+    public function cinema()
+    {
+        return $this->hasOne(Cinema::class);
     }
 }

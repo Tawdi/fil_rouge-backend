@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('rooms', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->unsignedInteger('seats_count')->default(0);
+            $table->unsignedInteger('rows');
+            $table->enum('row_naming',['letters','numbers'])->default('letters');
+            $table->unsignedInteger('seats_per_row');
             $table->jsonb('layout');
             $table->foreignId('cinema_id')->constrained()->onDelete('cascade');
             $table->timestamps();

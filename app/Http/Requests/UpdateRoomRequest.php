@@ -22,9 +22,11 @@ class UpdateRoomRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'sometimes|required|string|max:255',
-            'seats_count' => 'sometimes|required|integer|min:0',
-            'cinema_id' => 'sometimes|required|exists:cinemas,id',
+            'name' => 'required|string|max:255',
+            'rows' => 'required|integer|min:1',
+            'seats_per_row' => 'required|integer|min:1',
+            'row_naming' => 'required|in:letters,numbers',
+            'layout' => 'required|json',
         ];
     }
 }

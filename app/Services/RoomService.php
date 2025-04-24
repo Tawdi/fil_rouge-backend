@@ -6,9 +6,9 @@ use App\Models\Room;
 
 class RoomService
 {
-    public function all()
+    public function all($cinemaId)
     {
-        return Room::with('cinema')->paginate(10);
+        return Room::where('cinema_id',$cinemaId)->paginate(6);
     }
 
     public function create(array $data): Room

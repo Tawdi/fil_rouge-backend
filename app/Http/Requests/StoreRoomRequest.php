@@ -23,8 +23,10 @@ class StoreRoomRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'seats_count' => 'required|integer|min:0',
-            'cinema_id' => 'required|exists:cinemas,id',
+            'rows' => 'required|integer|min:1',
+            'seats_per_row' => 'required|integer|min:1',
+            'row_naming' => 'required|in:letters,numbers',
+            'layout' => 'required|json',
         ];
 
     }
