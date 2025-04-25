@@ -11,6 +11,7 @@ class Seance extends Model
         'room_id',
         'start_time',
         'end_time',
+        'pricing'
     ];
 
     public function movie()
