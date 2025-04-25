@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('seances', function (Blueprint $table) {
             $table->id();
-            $table->dateTime('horaires');
+            $table->dateTime('start_time');
+            $table->dateTime('end_time');
             $table->foreignId('movie_id')->constrained()->onDelete('cascade');
             $table->foreignId('room_id')->constrained()->onDelete('cascade');
+            $table->jsonb('pricing');
             $table->timestamps();
         });
 
