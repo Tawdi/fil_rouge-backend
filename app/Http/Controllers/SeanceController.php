@@ -5,6 +5,7 @@ use App\Http\Requests\StoreSeanceRequest;
 use App\Http\Requests\UpdateSeanceRequest;
 use App\Models\Seance;
 use App\Services\SeanceService;
+use Illuminate\Http\JsonResponse;
 
 class SeanceController extends Controller
 {
@@ -21,9 +22,9 @@ class SeanceController extends Controller
         return response()->json($seance, 201);
     }
 
-    public function show(Seance $seance)
+    public function show($id) : JsonResponse
     {
-        return $seance->load(['movie', 'room']);
+        return response()->json($this->seanceService->findById($id));
     }
 
     public function update(UpdateSeanceRequest $request, Seance $seance)

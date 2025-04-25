@@ -17,6 +17,11 @@ class SeanceService
         return $seance;
     }
 
+    public function findById(int $id): ?Seance
+    {
+        return Seance::with('movie','room')->findOrFail($id);
+    }
+
     public function delete(Seance $seance): void
     {
         $seance->delete();

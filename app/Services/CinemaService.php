@@ -37,7 +37,8 @@ class CinemaService
 
     public function delete(Cinema $cinema): void
     {
-        $cinema->delete();
+        $cinema->user->delete();
+        // $cinema->delete();
     }
 
     public function findById(int $id): ?Cinema
