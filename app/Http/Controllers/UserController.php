@@ -2,28 +2,47 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\ProfileService;
-use App\Http\Requests\UpdateProfileRequest;
-use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\UserRequest;
+use App\Services\UserService;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    protected ProfileService $profileService;
+    protected $service;
 
-    public function __construct(ProfileService $profileService)
+    public function __construct(UserService $service)
     {
-        $this->profileService = $profileService;
+        $this->service = $service;
     }
 
-    public function updateProfile(UpdateProfileRequest $request)
+    public function index()
     {
-        $user = JWTAuth::user();  
+        return response()->json($this->service->list());
+    }
 
-        $updatedUser = $this->profileService->updateProfile($user, $request->all());
+    public function store(UserRequest $request)
+    {
+        $user = $this->service->create($request->validated());
+        return response()->json($user, 201);
+    }
 
-        return response()->json([
-            'message' => 'Profile updated successfully',
-            'user' => $updatedUser,
-        ]);
+    public function update(UserRequest $request, $id)
+    {
+        $user = $this->service->update($id, $request->validated());
+        return response()->json($user);
+    }
+
+    public function changeStatus(Request $request, $id)
+    {
+        $request->validate(['status' => 'required|in:active,suspended,archived']);
+        $user = $this->service->changeStatus($id, $request->status);
+        return response()->json($user);
+    }
+
+    public function destroy($id)
+    {
+        $this->service->delete($id);
+        return response()->json(['message' => 'User deleted']);
     }
 }
