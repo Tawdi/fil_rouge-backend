@@ -24,6 +24,7 @@ class StoreSeanceRequest extends FormRequest
         return [
             'movie_id'   => 'required|exists:movies,id',
             'room_id'    => 'required|exists:rooms,id',
+            'pricing' => 'required|json',
             'start_time' => 'required|date|after:now',
             'end_time'   => 'required|date|after:start_time',
         ];

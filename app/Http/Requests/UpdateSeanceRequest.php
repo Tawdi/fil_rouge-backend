@@ -11,7 +11,7 @@ class UpdateSeanceRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -26,6 +26,7 @@ class UpdateSeanceRequest extends FormRequest
             'room_id'    => 'sometimes|exists:rooms,id',
             'start_time' => 'sometimes|date|after:now',
             'end_time'   => 'sometimes|date|after:start_time',
+            'pricing'    => 'sometimes|json',
         ];
     }
 }
