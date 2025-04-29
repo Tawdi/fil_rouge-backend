@@ -32,6 +32,7 @@ class UserRequest extends FormRequest
             'email' => $emailRule,
             'password' => $userId ? 'nullable|string|min:6' : 'required|string|min:6',
             'role' => 'required|in:user,cinema_admin,super_admin',
+            'status' => 'sometimes|in:active,suspended,archived',
         ];
     }
 }
