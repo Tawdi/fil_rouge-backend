@@ -38,4 +38,12 @@ class SeanceController extends Controller
         $this->seanceService->delete($seance);
         return response()->noContent();
     }
+    public function getSeanceByCinema(){
+
+        $user = auth('api')->user();
+        if (!$user->isCinemaAdmin() || !$user->cinema) {
+            return response()->json(['message' => 'You must be a cinema admin with an associated cinema'], 403);
+        }
+        return response()->json($this->seanceService->getForSeanceCinema($user->cinema->id));
+    }
 }

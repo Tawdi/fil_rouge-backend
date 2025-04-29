@@ -26,4 +26,11 @@ class SeanceService
     {
         $seance->delete();
     }
+    public function getForSeanceCinema($cinemaId)
+    {
+        return Seance::with('movie', 'room')->whereHas('room', 
+            function ($query) use ($cinemaId) {
+            $query->where('cinema_id', $cinemaId);
+            })->get();
+    }
 }

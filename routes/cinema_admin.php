@@ -12,7 +12,9 @@ Route::middleware(['auth:api', 'role:cinema_admin'])->group(function () {
 
     Route::prefix('cinema-admin')->group(function(){
         
-        Route::apiResource('seances', SeanceController::class);
+        Route::apiResource('seances', SeanceController::class)->except('index');
+        Route::get('/seances',[SeanceController::class,'getSeanceByCinema']);
+        
         Route::apiResource('rooms', RoomController::class);
         Route::get('/dashboard', [CinemaStatsController::class, 'index']);
     });
