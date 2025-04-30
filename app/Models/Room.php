@@ -17,6 +17,10 @@ class Room extends Model
         'cinema_id',
     ];
 
+    protected $casts = [
+        'seats' => 'array',
+    ];
+
     public function cinema()
     {
         return $this->belongsTo(Cinema::class);

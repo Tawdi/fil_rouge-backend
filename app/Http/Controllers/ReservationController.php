@@ -40,8 +40,6 @@ class ReservationController extends Controller
         $reservations = $this->reservationService->getSeanceReservations($seanceId);
         $seats = $reservations->pluck('seats')->flatten(1); 
 
-        return response()->json([
-            'reserved_seats' => $seats
-        ]);
+        return response()->json($seats);
     }
 }

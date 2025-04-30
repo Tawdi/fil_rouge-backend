@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\UserController;
@@ -20,5 +21,9 @@ Route::middleware('auth:api')->group(function(){
     Route::get('/reservations', [ReservationController::class, 'index']);
 
     Route::post('/reservations', [ReservationController::class, 'store']);
+    Route::post('/reservations/seance/{id}', [ReservationController::class, 'reservedSeats']);
+    
+
+    // Route::post('/payment', [PaymentController::class, 'process']);
 
 });

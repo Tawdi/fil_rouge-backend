@@ -24,7 +24,9 @@ class ReservationStoreRequest extends FormRequest
         return [
             'seance_id' => 'required|exists:seances,id',
             'seats' => 'required|array|min:1',
-            'seats.*' => 'required|string' // "A1", "B3"
+            'seats.*.row' => 'required|integer',
+            'seats.*.col' => 'required|integer',
+            'seats.*.type' => 'required|string',
         ];
     }
 
@@ -34,8 +36,6 @@ class ReservationStoreRequest extends FormRequest
             'seance_id.required' => 'Seance ID is required.',
             'seance_id.exists' => 'The selected seance does not exist.',
             'seats.required' => 'At least one seat must be selected.',
-            'seats.array' => 'Seats must be provided as an array.',
-            'seats.*.string' => 'Each seat must be a valid string identifier.',
         ];
     }
 }
