@@ -20,5 +20,4 @@ Route::prefix('auth')->group(function () {
     Route::post('/refresh-token', [AuthController::class, 'refreshToken']);
 });
 
-Route::middleware('auth:api')->post('/create-payment-intent', [\App\Http\Controllers\StripeController::class, 'createIntent']);
 Route::middleware('auth:api')->post('/password/change', [PasswordController::class, 'update']);

@@ -23,7 +23,7 @@ return new class extends Migration
             $table->text('poster')->nullable();
             $table->text('background')->nullable();
             $table->text('trailer')->nullable();
-            $table->foreignId('genre_id')->constrained()->onDelete('cascade');
+            $table->foreignId('genre_id')->constrained()->onDelete('set null');
             $table->timestamps();
         });
 
