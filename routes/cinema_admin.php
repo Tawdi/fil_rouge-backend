@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CinemaController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\SeanceController;
 use App\Http\Controllers\CinemaStatsController;
@@ -17,5 +18,6 @@ Route::middleware(['auth:api', 'role:cinema_admin'])->group(function () {
         
         Route::apiResource('rooms', RoomController::class);
         Route::get('/dashboard', [CinemaStatsController::class, 'index']);
+        Route::post('/cinema/update',[CinemaController::class, 'updateInfo']);
     });
 });

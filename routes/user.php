@@ -14,11 +14,13 @@ Route::middleware(['auth:api', 'role:user'])->group(function(){
     });
 });
 
+Route::post('/upload-profile', [ProfileController::class, 'upload']);
+
 Route::get('/genres', [GenreController::class, 'index']);
 Route::middleware('auth:api')->group(function(){
 
     Route::put('/user/profile', [ProfileController::class, 'updateProfile']);
-    Route::put('/user/profile-image', [ProfileController::class, 'updateProfileImage']);
+    Route::post('/user/profile-image', [ProfileController::class, 'updateProfileImage']);
 
     Route::get('/reservations', [ReservationController::class, 'index']);
     Route::post('/create-payment-intent', [\App\Http\Controllers\StripeController::class, 'createIntent']);

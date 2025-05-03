@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateCinemaRequest;
 use App\Models\Cinema;
 use App\Services\CinemaService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CinemaController extends Controller
 {
@@ -52,5 +53,34 @@ class CinemaController extends Controller
     {
         $this->cinemaService->delete($cinema);
         return response()->json(null, 204);
+    }
+
+    public function updateInfo(Request $request  )
+    {
+        
+        $user = auth('api')->user();
+        $cinema = $user->cinema ?? null;
+    
+        if (!$cinema || !$cinema->id) {
+            abort(400, 'No cinema associated with this admin.');
+        }
+
+        $validated = $request->validate([
+            'name' => 'sometimes|string|max:255',
+            'address' => 'sometimes|string',
+            'image' => 'sometimes|image|mimes:jpg,jpeg,png,gif,webp|max:2048', 
+        ]);
+
+        if ($request->hasFile('image')) {
+            if ($cinema->image && Storage::disk('public')->exists($cinema->image)) {
+                Storage::disk('public')->delete($cinema->image);
+            }
+    
+            $imagePath = $request->file('image')->store('cinema_images', 'public');
+            $validated['image'] = $imagePath;
+        }
+
+        $cinema = $this->cinemaService->update($cinema, $validated );
+        return response()->json($cinema);
     }
 }
