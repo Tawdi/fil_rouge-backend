@@ -18,7 +18,7 @@ class UserService
         return User::create($data);
     }
 
-    public function update($id, array $data)
+    public static function update($id, array $data)
     {
         $user = User::findOrFail($id);
 

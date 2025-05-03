@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCinemaRequest;
 use App\Http\Requests\UpdateCinemaRequest;
 use App\Models\Cinema;
+use App\Services\AuthService;
 use App\Services\CinemaService;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Hash;
 
 class CinemaController extends Controller
 {
@@ -82,5 +86,60 @@ class CinemaController extends Controller
 
         $cinema = $this->cinemaService->update($cinema, $validated );
         return response()->json($cinema);
+    }
+
+    public function info(Request $request)
+    {
+        $user = auth('api')->user();
+        $cinema = $user->cinema;
+        if (!$cinema) {
+            return response()->json([
+                'message' => 'No cinema associated with this admin.'
+            ], 404);
+        }
+        return response()->json([
+            'cinema' => [
+                'name' => $cinema->name,
+                'address' => $cinema->address,
+                'image' => $cinema->image,
+            ],
+            'admin' => [
+                'email' => $user->email,
+            ]
+        ]);
+    }
+
+    public function updateAdminInfo(Request $request)
+    {
+        $user = auth('api')->user();
+        $cinema = $user->cinema;
+    
+        if (!$cinema) {
+            return response()->json([
+                'message' => 'No cinema associated with this admin.'
+            ], 404);
+        }
+    
+        $validated = $request->validate([
+            'email' => ['required','email',Rule::unique('users')->ignore($user->id),],
+            'current_password' => 'required_with:new_password',
+            'new_password' => 'nullable|string|min:8|confirmed',
+        ]);
+
+        if (!empty($validated['new_password'])) {
+            if (!AuthService::changePassword($user, $validated['current_password'], $validated['new_password'])) {
+                return response()->json([
+                    'message' => 'Current password is wrong.'
+                ], 403);
+            }
+        }
+
+
+        $updatedUser = UserService::update($user->id, ["email"=> $validated["email"]]);
+    
+        return response()->json([
+            'message' => 'Admin account updated successfully.',
+            'user' => $updatedUser,
+        ]);
     }
 }

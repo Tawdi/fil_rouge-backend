@@ -28,7 +28,7 @@ class AuthService
     }
 
 
-    public function changePassword(User $user, string $currentPassword, string $newPassword): bool
+     public static function changePassword(User $user, string $currentPassword, string $newPassword): bool
     {
         if (!Hash::check($currentPassword, $user->password)) {
             return false;

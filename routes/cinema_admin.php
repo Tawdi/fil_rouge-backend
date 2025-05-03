@@ -19,5 +19,8 @@ Route::middleware(['auth:api', 'role:cinema_admin'])->group(function () {
         Route::apiResource('rooms', RoomController::class);
         Route::get('/dashboard', [CinemaStatsController::class, 'index']);
         Route::post('/cinema/update',[CinemaController::class, 'updateInfo']);
+        Route::post('/account/update',[CinemaController::class, 'updateAdminInfo']);
+        Route::get('/info',[CinemaController::class, 'info']);
+
     });
 });
