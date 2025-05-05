@@ -17,6 +17,7 @@ Route::middleware(['auth:api', 'role:user'])->group(function(){
 Route::post('/upload-profile', [ProfileController::class, 'upload']);
 
 Route::get('/genres', [GenreController::class, 'index']);
+Route::get('/genres/imgs', [GenreController::class, 'withPosters']);
 Route::middleware('auth:api')->group(function(){
 
     Route::put('/user/profile', [ProfileController::class, 'updateProfile']);

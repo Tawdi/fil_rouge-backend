@@ -21,6 +21,12 @@ class GenreController extends Controller
         return response()->json($genres);
     }
 
+    public function withPosters(): JsonResponse
+    {
+        $genres = $this->genreService->genreWithPosters();
+        return response()->json($genres);
+    }
+
     /**
      * Store a newly created resource in storage.
      */

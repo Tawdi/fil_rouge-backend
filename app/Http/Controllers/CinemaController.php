@@ -142,4 +142,11 @@ class CinemaController extends Controller
             'user' => $updatedUser,
         ]);
     }
+
+    public function cinemaData(Request $request ,$id)
+    {
+        $cinema = Cinema::findOrFail($id);
+        $cinema['movies']=$this->cinemaService->inCinema($id);
+        return response()->json($cinema); 
+    }
 }

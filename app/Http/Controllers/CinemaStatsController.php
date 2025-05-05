@@ -29,6 +29,12 @@ class CinemaStatsController extends Controller
             'reservations_count' => $this->cinemaStatsService->reservationsCount(),
             'recent_reservations' => $this->cinemaStatsService->recentReservations(),
             'seats_sold' => $this->cinemaStatsService->seatsSoldCount(),
+            'top_movies' => $this->cinemaStatsService->topMovies(),
+            'upcoming_seances' => $this->cinemaStatsService->upcomingSeances(),
+            'reservations_trend' => $this->cinemaStatsService->reservationsTrend(),
+            'current_movies'=>$this->cinemaStatsService->currentMovies(),
+            //
+
         ];
 
         return response()->json($stats);

@@ -38,9 +38,10 @@ class MovieController extends Controller
             $query->where('release_date', '>=', $request->input('release_date'));
         }
 
-        $movies = $query->with('genre')->paginate(12);
+        $movies = $query->with('genre')->get();
+        // $movies = $query->with('genre')->paginate(12);
 
-        return response()->json($movies);
+        return response()->json(['data'=>$movies]);
     }
 
     /**
@@ -77,4 +78,11 @@ class MovieController extends Controller
         $this->movieService->delete($movie);
         return response()->json(null, 204);
     }
+
+    public function moviesInCinema(): JsonResponse
+    {
+        $movies = $this->movieService->getMoviesInCinema();
+        return response()->json($movies);
+    }
+    
 }

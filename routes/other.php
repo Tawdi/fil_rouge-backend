@@ -12,6 +12,7 @@ Route::get('movies',[ MovieController::class,'index']);
 Route::get('/movies-has-seances', [MovieController::class ,'moviesInCinema']);
 
 Route::get('cinemas', [CinemaController::class,'index']);
+Route::get('cinemas/{id}', [CinemaController::class,'cinemaData']);
 
 Route::get('rooms', [RoomController::class ,'index']);
 Route::get('seances', [SeanceController::class ,'index']);

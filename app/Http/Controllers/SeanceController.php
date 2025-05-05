@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreSeanceRequest;
 use App\Http\Requests\UpdateSeanceRequest;
 use App\Models\Seance;
+use App\Services\MovieService;
 use App\Services\SeanceService;
 use Illuminate\Http\JsonResponse;
 
@@ -45,5 +46,13 @@ class SeanceController extends Controller
             return response()->json(['message' => 'You must be a cinema admin with an associated cinema'], 403);
         }
         return response()->json($this->seanceService->getForSeanceCinema($user->cinema->id));
+    }
+
+    public function seancesForMovie($movieId)
+    {
+        $movie = MovieService::findById($movieId);
+        if(!$movie) return response()->json(['message'=>'Movie not found'],404);
+
+        return  response()->json(["movie"=> $movie , "cinemas"=>$this->seanceService->getSeancesForMovie($movie->id)]);
     }
 }
