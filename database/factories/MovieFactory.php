@@ -18,7 +18,7 @@ class MovieFactory extends Factory
 {
     return [
         'titre' => $this->faker->sentence(3),
-        'duration' => $this->faker->numberBetween(90, 180),
+        'duration' => $this->faker->numberBetween(110, 180),
         'rating' => $this->faker->randomFloat(1, 1, 9),
         'description' => $this->faker->paragraph,
         'release_date' => $this->faker->date,

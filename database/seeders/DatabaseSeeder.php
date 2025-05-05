@@ -22,15 +22,15 @@ class DatabaseSeeder extends Seeder
             'password'=> 'password',
             'role'=>'super_admin'
         ]);
-        Genre::factory()->create([
-            'name' => 'Horror',
-        ]);
-        Genre::factory()->create([
-            'name' => 'Sci-Fi',
-        ]);
-        Genre::factory()->create([
-            'name' => 'Romance',
-        ]);
+        // List of genre names
+        $genres = ['Horror', 'Sci-Fi', 'Romance', 'Action', 'Comedy', 'Drama', 'Thriller', 'Animation', 'Fantasy', 'Documentary'];
+
+        // Create genres using the factory
+        foreach ($genres as $genreName) {
+            Genre::factory()->create([
+                'name' => $genreName,
+            ]);
+        }
 
         $this->call([
             MovieSeeder::class,

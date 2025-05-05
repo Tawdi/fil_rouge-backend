@@ -24,6 +24,7 @@ Route::middleware('auth:api')->group(function(){
     Route::post('/user/profile-image', [ProfileController::class, 'updateProfileImage']);
 
     Route::get('/reservations', [ReservationController::class, 'index']);
+    Route::get('/reservations/{id}', [ReservationController::class, 'show']);
     Route::post('/create-payment-intent', [\App\Http\Controllers\StripeController::class, 'createIntent']);
     Route::post('/reservations', [ReservationController::class, 'store']);
     Route::post('/reservations/seance/{id}', [ReservationController::class, 'reservedSeats']);

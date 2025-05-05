@@ -30,9 +30,12 @@ class ReservationController extends Controller
     {
         $reservations = $this->reservationService->getUserReservations();
 
-        return response()->json([
-            'data' => $reservations
-        ]);
+        return response()->json($reservations);
+    }
+
+    public function show($id): JsonResponse
+    {
+        return  $this->reservationService->findById($id);
     }
 
     public function reservedSeats($seanceId): JsonResponse
