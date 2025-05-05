@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Movie;
+use Carbon\Carbon;
 
 class MovieService
 {
@@ -16,6 +17,11 @@ class MovieService
         return Movie::create($data);
     }
 
+    public static function findById($id)
+    {
+        return Movie::find($id);
+    }
+
     public function update(Movie $movie, array $data): Movie
     {
         $movie->update($data);
@@ -26,4 +32,13 @@ class MovieService
     {
         $movie->delete();
     }
+
+    public function getMoviesInCinema()
+    {
+        $today = Carbon::now();
+         return Movie::with('genre')->whereHas('seances', function ($query) use ($today) {
+            $query->where('start_time', '>', $today);
+        })->get();
+    }
+    
 }

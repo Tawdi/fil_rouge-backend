@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Cinema;
+use App\Models\Movie;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
@@ -44,5 +45,16 @@ class CinemaService
     public function findById(int $id): ?Cinema
     {
         return Cinema::with('user','rooms')->findOrFail($id);
+    }
+
+    public function inCinema( $cinemaId)
+    {
+        $movies = Movie::with('genre')->whereHas('seances', function ($query) use ($cinemaId) {
+            $query->where('start_time', '>', now())
+            ->whereHas('room', function ($q) use ($cinemaId) {
+                $q->where('cinema_id', $cinemaId);
+            });
+        })->get();
+        return $movies;
     }
 }
