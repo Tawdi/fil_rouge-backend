@@ -26,12 +26,30 @@ class SeanceService
     {
         $seance->delete();
     }
-    public function getForSeanceCinema($cinemaId)
+    public function getForSeanceCinema($cinemaId, array $filters = [])
     {
-        return Seance::with('movie', 'room')->whereHas('room', 
+        $query = Seance::with('movie', 'room')->whereHas('room', 
             function ($query) use ($cinemaId) {
             $query->where('cinema_id', $cinemaId);
-            })->get();
+            });
+            
+            if (!empty($filters['room_id'])) {
+                $query->where('room_id', $filters['room_id']);
+            }
+        
+            if (!empty($filters['movie_id'])) {
+                $query->where('movie_id', $filters['movie_id']);
+            }
+        
+            if (!empty($filters['start_date'])) {
+                $query->whereDate('start_time', '>=', $filters['start_date']);
+            }
+        
+            if (!empty($filters['end_date'])) {
+                $query->whereDate('start_time', '<=', $filters['end_date']);
+            }
+        
+            return $query->get();
     }
 
     public function getSeancesForMovie($movieId)

@@ -7,6 +7,7 @@ use App\Models\Seance;
 use App\Services\MovieService;
 use App\Services\SeanceService;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class SeanceController extends Controller
 {
@@ -39,13 +40,29 @@ class SeanceController extends Controller
         $this->seanceService->delete($seance);
         return response()->noContent();
     }
-    public function getSeanceByCinema(){
+    public function getSeanceByCinema(Request $request){
 
         $user = auth('api')->user();
         if (!$user->isCinemaAdmin() || !$user->cinema) {
             return response()->json(['message' => 'You must be a cinema admin with an associated cinema'], 403);
         }
-        return response()->json($this->seanceService->getForSeanceCinema($user->cinema->id));
+
+        $validated = $request->validate([
+            'room_id'    => 'nullable|integer|exists:rooms,id',
+            'movie_id'   => 'nullable|integer|exists:movies,id',
+            'start_date' => 'nullable|date',
+            'end_date'   => 'nullable|date|after_or_equal:start_date',
+        ]);
+        try {
+            $seances = $this->seanceService->getForSeanceCinema(
+                $user->cinema->id,
+                $validated
+            );
+            return response()->json($seances, 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Failed to fetch seances: ' . $e->getMessage()], 500);
+        }
+        // return response()->json($this->seanceService->getForSeanceCinema($user->cinema->id));
     }
 
     public function seancesForMovie($movieId)
