@@ -14,9 +14,7 @@ FilmSeat est le backend de l’application de réservation de billets de cinéma
 * [Base de données & Migrations](#base-de-données--migrations)
 * [Endpoints API](#endpoints-api)
 * [Authentification](#authentification)
-* [Gestion en temps réel](#gestion-en-temps-réel)
 * [Tests](#tests)
-* [Déploiement](#déploiement)
 * [Licence](#licence)
 
 ---
