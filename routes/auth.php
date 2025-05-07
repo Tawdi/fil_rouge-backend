@@ -20,4 +20,4 @@ Route::prefix('auth')->group(function () {
     Route::post('/refresh-token', [AuthController::class, 'refreshToken']);
 });
 
-Route::middleware('auth:api')->post('/password/change', [PasswordController::class, 'update']);
+Route::middleware(['auth:api', 'active'])->post('/password/change', [PasswordController::class, 'update']);
