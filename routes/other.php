@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('movies',[ MovieController::class,'index']);
+Route::get('movies-all',[ MovieController::class,'getAll']);
 Route::get('/movies-has-seances', [MovieController::class ,'moviesInCinema']);
 
 Route::get('cinemas', [CinemaController::class,'index']);

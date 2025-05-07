@@ -38,10 +38,15 @@ class MovieController extends Controller
             $query->where('release_date', '>=', $request->input('release_date'));
         }
 
-        $movies = $query->with('genre')->get();
+        // $movies = $query->with('genre')->get();
         $movies = $query->with('genre')->paginate(12);
 
         return response()->json($movies);
+    }
+
+    public function getAll(): JsonResponse
+    {
+        return response()->json(["data"=>Movie::with('genre')->get()]);
     }
 
     /**

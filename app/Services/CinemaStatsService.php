@@ -77,7 +77,10 @@ class CinemaStatsService
 
     public function upcomingSeances()
     {
-        return Seance::with(['movie', 'room'])
+        return Seance::with(['movie', 'room'])->whereHas('room',
+        function ($query) {
+            $query->where('cinema_id', $this->cinemaId);
+        })
         ->where('start_time', '>', now())
         ->orderBy('start_time') 
         ->take(5) 
@@ -96,7 +99,10 @@ class CinemaStatsService
     }
     public function currentMovies()
     {
-        return Movie::whereHas('seances', function ($query) {
+        return Movie::whereHas('seances.room', function ($query) {
+            $query->where('cinema_id', $this->cinemaId);
+        })
+        ->whereHas('seances', function ($query) {
             $query->where('start_time', '>=', now());
         })
         ->with('genre')

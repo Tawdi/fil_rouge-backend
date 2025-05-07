@@ -17,15 +17,16 @@ class AdminStatsService
             'total_cinemas' => Cinema::count(),
             'total_reservations' => Reservation::count(),
             'total_revenue' => $this->calculateTotalRevenue(),
+            'weekly_revenue'=> $this->reservationsTrend()
         ];
     }
 
     public function getTopMovies($limit = 5)
     {
-        return Movie::select('movies.id', 'movies.titre', DB::raw('COUNT(reservations.id) as reservations_count'))
+        return Movie::select('movies.id','movies.poster', 'movies.titre', DB::raw('COUNT(reservations.id) as reservations_count'))
             ->join('seances', 'movies.id', '=', 'seances.movie_id')
             ->join('reservations', 'seances.id', '=', 'reservations.seance_id')
-            ->groupBy('movies.id', 'movies.titre')
+            ->groupBy('movies.id', 'movies.titre','movies.poster')
             ->orderByDesc('reservations_count')
             ->limit($limit)
             ->get();
@@ -48,5 +49,13 @@ class AdminStatsService
         return Reservation::join('seances', 'reservations.seance_id', '=', 'seances.id')
         ->select(DB::raw('SUM(jsonb_array_length(reservations.seats) * (seances.pricing->>\'Standard\')::numeric) as total'))
         ->value('total') ?? 0;
+    }
+
+    public function reservationsTrend()
+    {
+        return Reservation::selectRaw('DATE(created_at) as date, COUNT(*) as count')
+        ->groupBy('date')
+        ->orderBy('date')
+        ->get();
     }
 }
