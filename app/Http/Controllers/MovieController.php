@@ -39,9 +39,9 @@ class MovieController extends Controller
         }
 
         $movies = $query->with('genre')->get();
-        // $movies = $query->with('genre')->paginate(12);
+        $movies = $query->with('genre')->paginate(12);
 
-        return response()->json(['data'=>$movies]);
+        return response()->json($movies);
     }
 
     /**

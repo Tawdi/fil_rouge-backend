@@ -11,7 +11,7 @@ class CinemaService
 {
     public function all()
     {
-        return Cinema::with('user','rooms')->paginate(10);
+        return Cinema::with('user','rooms')->get();
     }
 
     public function create(array $data): Cinema
@@ -29,6 +29,7 @@ class CinemaService
             'user_id' => $user->id,
         ]);
     }
+
 
     public function update(Cinema $cinema, array $data): Cinema
     {

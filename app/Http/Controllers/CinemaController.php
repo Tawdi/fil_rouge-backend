@@ -22,7 +22,7 @@ class CinemaController extends Controller
      */
     public function index()
     {
-        return response()->json($this->cinemaService->all());
+        return response()->json(['data'=>$this->cinemaService->all()]);
     }
 
     /**
